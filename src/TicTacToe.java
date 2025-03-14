@@ -14,9 +14,13 @@ public class TicTacToe {
     JPanel boardPanel = new JPanel();
 
     JButton[][] board = new JButton[3][3];
+
+    JButton restartButton = new JButton("Restart");
+
     String playerX = "X";
     String playerO = "O";
     String currentPlayer = playerX;
+    String gameTitle = "TicTacToe";
 
     int turns =0;
 
@@ -36,7 +40,7 @@ public class TicTacToe {
         textLabel.setForeground(Color.white);
         textLabel.setFont(new Font("Arial", Font.BOLD,50));
         textLabel.setHorizontalAlignment(JLabel.CENTER);
-        textLabel.setText("E un juego del gato");
+        textLabel.setText(gameTitle);
         textLabel.setOpaque(true);
 
         textPanel.setLayout(new BorderLayout());
@@ -48,6 +52,34 @@ public class TicTacToe {
         boardPanel.setLayout(new GridLayout(3,3));
         boardPanel.setBackground(Color.darkGray);
 
+//    if(gameOver) {
+//
+        //New panel
+         JPanel controlPanel = new JPanel();
+         controlPanel.setBackground(Color.darkGray);
+         controlPanel.add(restartButton);
+         frame.add(controlPanel, BorderLayout.SOUTH);
+
+        //Restart button creation
+         restartButton.setBackground(Color.gray);
+         restartButton.setForeground(Color.white);
+         restartButton.setFont(new Font("Arial", Font.BOLD, 50));
+         restartButton.setFocusable(false);
+
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                restart();
+            }
+        });
+
+        restartButton.setVisible(false);
+//    }
+
+
+
+
+        //Colocar el tablero
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
                 JButton title = new JButton();
@@ -63,8 +95,7 @@ public class TicTacToe {
                 title.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (gameOver)
-                            return;
+                        if (gameOver) return;
 
                         JButton title =(JButton) e.getSource();
                         if(title.getText().isEmpty()){
@@ -93,6 +124,7 @@ public class TicTacToe {
                     setWinner(board[r][i]);
                 }
                     gameOver = true;
+                    restartButton.setVisible(true);
                     return;
             }
         }
@@ -105,6 +137,7 @@ public class TicTacToe {
                     setWinner(board[j][c]);
                 }
                 gameOver = true;
+                restartButton.setVisible(true);
                 return;
             }
         }
@@ -116,6 +149,7 @@ public class TicTacToe {
                 setWinner(board[k][k]);
             }
             gameOver = true;
+            restartButton.setVisible(true);
             return;
         }
         //Diagonal-contraria
@@ -127,6 +161,7 @@ public class TicTacToe {
             setWinner(board[1][1]);
             setWinner(board[2][0]);
             gameOver = true;
+            restartButton.setVisible(true);
             return;
         }
 
@@ -137,6 +172,7 @@ public class TicTacToe {
                 }
             }
             gameOver = true;
+            restartButton.setVisible(true);
         }
 
 
@@ -151,6 +187,23 @@ public class TicTacToe {
         title.setForeground(Color.orange);
         title.setBackground(Color.gray);
         textLabel.setText("Empate!");
+    }
+
+    void restart() {
+
+        gameOver = false;
+        turns = 0;
+        currentPlayer = playerX;
+        textLabel.setText(gameTitle);
+
+        for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            board[r][c].setText("");
+            board[r][c].setBackground(Color.darkGray);
+            board[r][c].setForeground(Color.white);
+        }
+    }
+        restartButton.setVisible(false);
     }
 
 
